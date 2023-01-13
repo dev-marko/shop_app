@@ -40,13 +40,29 @@ class Products with ChangeNotifier {
     ),
   ];
 
+  // bool _showFavoritesOnly = false;
+
   List<Product> get items {
     return [..._items]; // returning a copy of the list.
     // we have to return a copy, because we don't want to return a reference
     // to the original list.
   }
 
+  List<Product> get favoriteItems {
+    return _items.where((item) => item.isFavorite).toList();
+  }
+
   void addProduct() {}
+
+  // void showFavoritesOnly() {
+  //   _showFavoritesOnly = true;
+  //   notifyListeners();
+  // }
+
+  // void showAll() {
+  //   _showFavoritesOnly = false;
+  //   notifyListeners();
+  // }
 
   Product findById(String id) {
     return _items.firstWhere((product) => product.id == id);
