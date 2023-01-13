@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/shopping_cart_provider.dart' show ShoppingCart;
+import '../providers/orders_provider.dart';
 
 import '../widgets/shopping_cart_display_item.dart';
 
@@ -13,6 +14,7 @@ class ShoppingCartScreen extends StatelessWidget {
     final shoppingCartContext = Provider.of<ShoppingCart>(context);
     final shoppingCartKeys = shoppingCartContext.items.keys.toList();
     final shoppingCartValues = shoppingCartContext.items.values.toList();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Shopping Cart'),
@@ -33,7 +35,7 @@ class ShoppingCartScreen extends StatelessWidget {
                   Spacer(),
                   Chip(
                     label: Text(
-                      '\$${shoppingCartContext.total}',
+                      '\$${shoppingCartContext.total.toStringAsFixed(2)}',
                       style: TextStyle(
                         color: Theme.of(context)
                             .primaryTextTheme
@@ -44,7 +46,11 @@ class ShoppingCartScreen extends StatelessWidget {
                     backgroundColor: Theme.of(context).colorScheme.primary,
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Provider.of<Orders>(context, listen: false).addOrder(
+                          shoppingCartValues, shoppingCartContext.total);
+                      shoppingCartContext.clear();
+                    },
                     child: Text('ORDER'),
                     style: ButtonStyle(
                       foregroundColor: MaterialStatePropertyAll<Color>(
