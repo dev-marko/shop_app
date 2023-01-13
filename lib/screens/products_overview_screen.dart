@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/providers/shopping_cart_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/products_grid.dart';
+import '../widgets/badge.dart';
 
 enum FilterOptions { Favorites, All }
 
@@ -11,13 +14,25 @@ class ProductsOverwiewScreen extends StatefulWidget {
 
 class _ProductsOverwiewScreenState extends State<ProductsOverwiewScreen> {
   bool _showOnlyFavorites = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('MS Shop'),
         actions: [
+          Consumer<ShoppingCart>(
+            builder: (_, shoppingCartContext, ch) => Badge(
+              child: ch,
+              value: shoppingCartContext.itemCount.toString(),
+            ),
+            // this child will not get rebuilt
+            child: IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.shopping_cart,
+              ),
+            ),
+          ),
           PopupMenuButton(
             onSelected: (FilterOptions selectedValue) {
               setState(() {
