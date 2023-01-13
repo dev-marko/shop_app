@@ -27,6 +27,14 @@ class ShoppingCart with ChangeNotifier {
     return _items.length;
   }
 
+  double get total {
+    double totalPrice = 0.0;
+    _items.forEach((key, value) {
+      totalPrice += value.quantity * value.price;
+    });
+    return totalPrice;
+  }
+
   void addItem(String productId, String title, double price) {
     if (_items.containsKey(productId)) {
       // change quantity...
@@ -50,6 +58,11 @@ class ShoppingCart with ChangeNotifier {
         ),
       );
     }
+    notifyListeners();
+  }
+
+  void removeItem(String productId) {
+    _items.remove(productId);
     notifyListeners();
   }
 }

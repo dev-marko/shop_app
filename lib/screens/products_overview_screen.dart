@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_complete_guide/providers/shopping_cart_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/products_grid.dart';
 import '../widgets/badge.dart';
+
+import '../screens/shopping_cart_screen.dart';
+
+import '../providers/shopping_cart_provider.dart';
 
 enum FilterOptions { Favorites, All }
 
@@ -27,7 +30,9 @@ class _ProductsOverwiewScreenState extends State<ProductsOverwiewScreen> {
             ),
             // this child will not get rebuilt
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed(ShoppingCartScreen.routeName);
+              },
               icon: Icon(
                 Icons.shopping_cart,
               ),
