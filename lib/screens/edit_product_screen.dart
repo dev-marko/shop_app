@@ -237,11 +237,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           return 'Please enter a valid URL.';
                         }
 
-                        if (!value.endsWith('.png') &&
-                            !value.endsWith('.jpg') &&
-                            !value.endsWith('.jpeg')) {
-                          return 'Please enter a valid image URL.';
-                        }
+                        // if (!value.endsWith('.png') &&
+                        //     !value.endsWith('.jpg') &&
+                        //     !value.endsWith('.jpeg')) {
+                        //   return 'Please enter a valid image URL.';
+                        // }
 
                         return null;
                       },
