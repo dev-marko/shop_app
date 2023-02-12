@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/providers/shopping_cart_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/shopping_cart_provider.dart' show ShoppingCart;
@@ -45,17 +46,9 @@ class ShoppingCartScreen extends StatelessWidget {
                     ),
                     backgroundColor: Theme.of(context).colorScheme.primary,
                   ),
-                  TextButton(
-                    onPressed: () {
-                      Provider.of<Orders>(context, listen: false).addOrder(
-                          shoppingCartValues, shoppingCartContext.total);
-                      shoppingCartContext.clear();
-                    },
-                    child: Text('ORDER'),
-                    style: ButtonStyle(
-                      foregroundColor: MaterialStatePropertyAll<Color>(
-                          Theme.of(context).colorScheme.primary),
-                    ),
+                  OrderButton(
+                    shoppingCartContext: shoppingCartContext,
+                    shoppingCartValues: shoppingCartValues,
                   ),
                 ],
               ),
@@ -77,6 +70,50 @@ class ShoppingCartScreen extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class OrderButton extends StatefulWidget {
+  const OrderButton({
+    Key key,
+    @required this.shoppingCartContext,
+    @required this.shoppingCartValues,
+  }) : super(key: key);
+
+  final ShoppingCart shoppingCartContext;
+  final List<ShoppingCartItem> shoppingCartValues;
+
+  @override
+  State<OrderButton> createState() => _OrderButtonState();
+}
+
+class _OrderButtonState extends State<OrderButton> {
+  bool _isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: (widget.shoppingCartContext.total <= 0 || _isLoading)
+          ? null
+          : () async {
+              setState(() {
+                _isLoading = true;
+              });
+              await Provider.of<Orders>(context, listen: false).addOrder(
+                widget.shoppingCartValues,
+                widget.shoppingCartContext.total,
+              );
+              setState(() {
+                _isLoading = false;
+              });
+              widget.shoppingCartContext.clear();
+            },
+      child: _isLoading ? CircularProgressIndicator() : Text('ORDER'),
+      style: ButtonStyle(
+        foregroundColor: MaterialStatePropertyAll<Color>(
+            Theme.of(context).colorScheme.primary),
       ),
     );
   }
